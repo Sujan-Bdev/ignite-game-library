@@ -46,6 +46,10 @@ export const newGamesURL = () => `${BASE_URL}${NEW_GAMES}`;
 export const gameDetailsURL = (game_id) =>
   `https://api.rawg.io/api/games/${game_id}`;
 
-  // GAME SCREENSHOTS
-  export const gameScreenshotURL = (game_id) =>
-    `https://api.rawg.io/api/games/${game_id}/screenshots`;
+// GAME SCREENSHOTS
+export const gameScreenshotURL = (game_id) =>
+  `https://api.rawg.io/api/games/${game_id}/screenshots`;
+
+// SEARCHED GAMES
+export const searchGameURL = (game_name) =>
+  `https://api.rawg.io/api/games?search=${game_name}&page_size=9`;

@@ -44,7 +44,19 @@ const Index = ({ pathId }) => {
     }
   };
 
-  
+  // get rating stars
+  const getStars = () => {
+    const stars = [];
+    const rating = Math.floor(gameDetail.rating);
+    for (let i = 1; i <= 5; i++) {
+      if (i <= rating) {
+        stars.push(<img alt="star" key={i} src={starFull}></img>);
+      } else {
+        stars.push(<img alt="star" key={i} src={starEmpty}></img>);
+      }
+    }
+    return stars;
+  };
 
   const { gameDetail, screenshot, isLoading } = useSelector(
     (state) => state.gameDetails
@@ -56,12 +68,13 @@ const Index = ({ pathId }) => {
         <CardShadow className="shadow" onClick={handleExitDetail}>
           <Detail layoutId={pathId}>
             <Stats>
-              <div className="rating">
+              <Rating>
                 <motion.h3 layoutId={`title ${pathId}`}>
                   {gameDetail.name}
                 </motion.h3>
                 <p>Rating: {gameDetail.rating}</p>
-              </div>
+                {getStars()}
+              </Rating>
 
               <Info>
                 <h3>Platforms</h3>
@@ -97,7 +110,6 @@ const Index = ({ pathId }) => {
     </>
   );
 };
-
 
 const CardShadow = styled(motion.div)`
   width: 100%;
@@ -140,6 +152,7 @@ const Stats = styled(motion.div)`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  
   img {
     width: 2rem;
     height: 2rem;
@@ -147,12 +160,16 @@ const Stats = styled(motion.div)`
   }
 `;
 
+const Rating = styled(motion.div)`
+  width: 50%;
+`
 const Info = styled(motion.div)`
   text-align: center;
 `;
 const Platforms = styled(motion.div)`
   display: flex;
   justify-content: space-evenly;
+  
   img {
     margin-left: 3rem;
   }

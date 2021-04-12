@@ -5,13 +5,14 @@ import {
   popularGamesURL,
   upcomingGamesURL,
   newGamesURL,
- 
+  searchGameURL,
 } from "utils/api";
 
 const initialState = {
   popular: [],
   newGames: [],
   upcoming: [],
+  searched:[],
   status: "idle",
   
 };
@@ -28,12 +29,22 @@ export const fetchGames = createAsyncThunk("games/fetchGames", async () => {
   };
 });
 
-
+export const fetchSearchGames = createAsyncThunk(
+  "games/fetchSearchGames",
+  async (game_name) => {
+    const search = await axios.get(searchGameURL(game_name));
+    return search.data.results
+  }
+);
 
 const gameSlice = createSlice({
   name: "games",
   initialState,
-  reducers: {},
+  reducers: {
+    clearSearch(state,action){
+      state.searched = []
+    }
+  },
   extraReducers: {
     [fetchGames.pending]: (state) => {
       state.status = "loading";
@@ -47,8 +58,20 @@ const gameSlice = createSlice({
     [fetchGames.rejected]: (state) => {
       state.status = "failed";
     },
-    
+    [fetchSearchGames.pending]: (state) => {
+      state.status = "loading";
+    },
+
+    [fetchSearchGames.fulfilled]: (state, { payload }) => {
+      state.status = "succeeded";
+      state.searched = payload;
+    },
+    [fetchSearchGames.rejected]: (state) => {
+      state.status = "failed";
+    },
   },
 });
 
 export default gameSlice.reducer;
+
+export const {clearSearch} = gameSlice.actions;
