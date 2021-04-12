@@ -41,3 +41,11 @@ const NEW_GAMES = `?dates=${LAST_YEAR},${CURRENT_DATE}&ordering=-released&page_s
 export const popularGamesURL = () => `${BASE_URL}${POPULAR_GAMES}`;
 export const upcomingGamesURL = () => `${BASE_URL}${UPCOMING_GAMES}`;
 export const newGamesURL = () => `${BASE_URL}${NEW_GAMES}`;
+
+// GAME DETAILS
+export const gameDetailsURL = (game_id) =>
+  `https://api.rawg.io/api/games/${game_id}`;
+
+  // GAME SCREENSHOTS
+  export const gameScreenshotURL = (game_id) =>
+    `https://api.rawg.io/api/games/${game_id}/screenshots`;

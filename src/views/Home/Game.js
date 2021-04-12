@@ -1,43 +1,51 @@
-import React from 'react';
-import {Link} from 'react-router-dom'
-import styled from 'styled-components';
-import {motion} from 'framer-motion';
-import {popup} from 'utils/animation';
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { motion } from "framer-motion";
 
+import { popup } from "utils/animation";
+import { fetchGameDetail } from "redux/gameDetailSlice";
+import {smallImage} from 'utils/smallImage';
 
-const Game = ({id,name,released,image}) => {
-    const stringPathId = id.toString();
+const Game = ({ id, name, released, image }) => {
+  const dispatch = useDispatch();
+  const stringPathId = id.toString();
 
-    return (
-        <StyledGame
-        variants = {popup}
-        initial = "hidden"
-        animate = "show"
-        layoutId= {stringPathId}
-        
-        >
-        <Link to = {`/game/${id}`}>
-            <motion.h3 layoutId = {`title ${stringPathId}`}>{name}</motion.h3>
-            <p>{released}</p>
-            <motion.img layoutId = {`image ${stringPathId}`}
-            src = {image}
-            alt = {name}/>
-        </Link>
-            
-        </StyledGame>
-    )
-}
+  const handleGameDetail = () => {
+      document.body.style.overflow = "hidden"
+    dispatch(fetchGameDetail(id));
+  };
+
+  return (
+    <StyledGame
+      variants={popup}
+      initial="hidden"
+      animate="show"
+      layoutId={stringPathId}
+      onClick={handleGameDetail}
+    >
+      <Link to={`/game/${id}`}>
+        <motion.h3 layoutId={`title ${stringPathId}`}>{name}</motion.h3>
+        <p>{released}</p>
+        <motion.img layoutId={`image ${stringPathId}`} src={image} alt={name} />
+      </Link>
+    </StyledGame>
+  );
+};
 
 const StyledGame = styled(motion.div)`
-    min-height:30vh;
-    box-shadow: 0px 5px 20px rgba(0,0,0,0.2);
-    text-align: center;
-    border-radius: 1rem;
-    img{
-        width:100%;
-        height:40vh;
-        object-fit: cover;
-    }
-`
+  min-height: 30vh;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  border-radius: 1rem;
+  cursor: pointer;
+  overflow:hidden;
+  img {
+    width: 100%;
+    height: 40vh;
+    object-fit: cover;
+  }
+`;
 
-export default Game
+export default Game;
